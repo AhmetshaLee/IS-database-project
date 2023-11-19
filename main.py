@@ -1,3 +1,4 @@
+import PySimpleGUI as sg
 import json
 import datetime
 
@@ -13,23 +14,55 @@ except (FileExistsError, OSError):
 
 while True:
     print('Заполните следующие данные: ')
-    first_name = input('Имя: ')
-    last_name = input('Фамилию: ')
-    birthday = input('Дата рождения (дд.мм.гггг): ')
-    city = input('Город: ')
-    address = input('Улица: ')
 
-    b_day, b_month, b_year = birthday.split('.')
-    street, house_num = address.replace(',', ' ').split()
+    last_name = input('Фамилия: ')
+    first_name = input('Имя: ')
+    patronymic = input('Отчество: ')
+
+    birth_date = input('Дата рождения (ДД.ММ.ГГГГ): ')
+    birth_place = input('Место рождения (Город — Регион — Страна): ')
+
+    live_place = input('Место фактического проживания (Регион — Город — Адрес): ')
+
+    gender = input('Пол (М/Ж): ')
+    marital_status = input('Семейное положение (Женат/Замужем): ')
+    child_info = input('Сведения о детях (Есть/Нет): ')
+
+    passport = input('Паспортные данные (Серия и №): ')
+    inn_number = input('ИНН: ')
+
+    phone = input('Номер телефона (Если несколько, то перечислить): ')
+    email = input('E-mail (Почта): ')
+
+    # city = input('Город: ')
+    # address = input('Улица: ')
+    # b_day, b_month, b_year = birth_date.split('.')
+    birth_city, birth_region, birth_country = birth_place.replace(',', ' ').split()
+    birth_place = ', '.join([birth_city, birth_region, birth_country])
+
+    live_region, live_city, live_address = live_place.split(', ')
+    live_place = ', '.join([live_region, live_city, live_address])
+
+    pass_series, pass_num = passport.replace(',', ' ').split()
+    passport = ' '.join([pass_series, pass_num])
 
     user = {
-        'first_name': first_name,
         'last_name': last_name,
-        'birthday': birthday,
-        'address': {
-            'city': city,
-            'street': [street, house_num]
+        'first_name': first_name,
+        'patronymic': patronymic,
+        'birth_date': birth_date,
+        'gender': gender,
+        'marital_status': marital_status,
+        'child_info': child_info,
+        'passport_data': passport,
+        'INN': inn_number,
+        'birth_place': birth_place,
+        'address': live_place,
+        'phone': [phone],
+        'other_data': {
+            'e-mail': [email]
         }
+
     }
 
     if 'users' not in users:
