@@ -2,6 +2,40 @@ import PySimpleGUI as sg
 import json
 import datetime
 
+toolbar_buttons = [[
+    sg.Button('ADD', button_color=(sg.COLOR_SYSTEM_DEFAULT), pad=(0,0), key='-ADD-'),
+    sg.Button('EDIT', button_color=(sg.COLOR_SYSTEM_DEFAULT), pad=(0,0), key='-EDIT-'),
+    sg.Button('SAVE', button_color=(sg.COLOR_SYSTEM_DEFAULT), pad=(0,0), key='-SAVE-'),
+    sg.Button('REMOVE', button_color=(sg.COLOR_SYSTEM_DEFAULT), pad=(0,0), key='-REMOVE-'),
+]]
+
+left_col = [
+    [sg.Text('Список')],
+    [sg.Listbox(values=['Текст'], size=(35, 25), font=('None 12'), key='-LISTBOX-', enable_events=True)],
+    [sg.Button('Выбрать', key='-SELECT_BTN-')]
+]
+
+right_col = [
+    [sg.Text('Имя'), sg.Push(), sg.InputText(size=(30,1), key='-NAME-', disabled=True)],
+    [sg.Text('Фамилия'), sg.Push(), sg.InputText(size=(30,1), key='-SURNAME-', disabled=True)],
+    [sg.Text('Дата рождения'), sg.Push(), sg.InputText(size=(30,1), key='-BIRTHDATE-', disabled=True)],
+]
+
+main_layout = [
+    [sg.Frame('Инструменты', toolbar_buttons)],
+    [sg.Column(left_col, element_justification='c'), sg.VSeparator(), sg.Column(right_col, vertical_alignment='t')],
+    [sg.StatusBar(f'file1, file2')]
+]
+
+window = sg.Window('работа с JSON', main_layout, resizable=False)
+
+while True:
+    event, values = window.read()
+    if event == sg.WIN_CLOSED:
+        break
+
+window.close()
+
 try:
     with open('users.json', 'r', encoding='utf-8') as json_data:
         users = json.load(json_data)
